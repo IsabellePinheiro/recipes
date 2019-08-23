@@ -1,26 +1,35 @@
 import React from "react";
 import "./App.css";
+import Receitas from "./Receitas";
+import recipesData from "./recipesData";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>My fav recipes</p>
-      </header>
-      <div className="app-lista">
-        <ul>
-          <li>RECEITA 1</li>
-          <li>RECEITA 2</li>
-          <li>RECEITA 3</li>
-          <li>RECEITA 4</li>
-          <li>RECEITA 5</li>
-          <li>RECEITA 6</li>
-          <li>RECEITA 7</li>
-          <li>RECEITA 8</li>
-        </ul>
-      </div>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      recipes: recipesData
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(id) {
+    this.setState(prevState => {
+      const updateRecipes = prevState.recipes.map(recipe => {
+        if (recipe.id === id) return recipe;
+      });
+      return {
+        recipes: updateRecipes
+      };
+    });
+  }
+
+  render() {
+    const recipeItems = this.state.recipes.map(item => (
+      <Receitas key={item.id} item={item} handleChange={this.handleChange} />
+    ));
+
+    return <div> {recipeItems}</div>;
+  }
 }
 
 export default App;
